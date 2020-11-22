@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>境外柱状图</title>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+</head>
+<body>
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 800px;height:400px;"></div>
+<!--    接收服务端的数据，并且 使用thymeleaf-->
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    //获取从服务端传输过来的数据
+    var nameStr = [[${nameList}]];
+    var fromAbroadStr = [[${fromAbroadList}]];
+
+
+    option = {
+        xAxis: {
+            type: 'category',
+            data: JSON.parse(nameStr)
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: JSON.parse(fromAbroadStr),
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(220, 220, 220, 0.8)'
+            }
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+</body>
+</html>
